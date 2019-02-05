@@ -1,36 +1,69 @@
 import os
+import string
 from path_scanner import scan
 
-solution_path = "correct_outputs/"
+compiled_solution_path = "correct_outputs/"
 output_path = "user_outputs/"
 inputs_path = "inputs/"
 
-def delete_files(file_paths):
+def delete_files(file_paths): #Tested
     for path in file_paths:
         os.system("rm {}".format(path));
 
-def is_output_correct(output_path, solution_path):
+def test_input(output_path, solution_path): #Tested
     text = os.system("diff --strip-trailing-cr {} {}".format(output_path, solution_path))
     print(text)
 
-def test_code(lab_number, file_path):
+def compare_strings_ignore_whitespace(s1, s2): #Tested
+    remove = string.whitespace
+    return s1.translate(None, remove) == s2.translate(None, remove)
 
-    os.system("gcc {} -o compiled_solution.out".format(solution_path));
+def give_compiled(file_name, compiled_file_name): #Tested
+    os.system("gcc {} -o {}".format(file_name, compiled_file_name))
+    return compiled_file_name
 
-    input_files = scan(inpus_path);
-    currentTestNum = 1;
+def give_output(input_path, compiled_path): #Tested
+    #print("./{} < {} > output.out".format(compiled_path, input_path))
+    os.system("./{} < {} > output.out".format(compiled_path, input_path))
+    outputFile = open("output.out", 'r')
+    delete_files(["output.out"])
+    return outputFile.read()
 
-    for path in input_files:
+def test_input(input_path, solution_compiled_path, compiled_file_path): #Tested
+    output1 = give_output(input_path, solution_compiled_path)
+    output2 = give_output(input_path, compiled_file_path)
+    return compare_strings_ignore_whitespace(output1, output2)
 
-        os.system("./compiled_code.out < {} > user_output".format(path));
-        os.system("./{} < {} > solution_output".format(solution_path, path));
-        if is_output_correct(user_output, solution_output) == False:
-            print("test {}: Wrong".format(currentTestNum));
-            return False;
-        print("test {}: Correct".format(currentTestNum);
-        currentTestNum++;
+def make_inputs(lab_number):
+    return 0
 
+def test_code(lab_number, test_file_name): #Tested
+    #make_inputs(lab_number, input_path)
+    #input_files = scan(input_path)
+    input_files = ["1", "2"]
+    compiled_file_path = give_compiled(test_file_name, "user_compiled_code")
+    solution_compiled_path = "solution.out";
+    first_wrong_test = None
+    correct_output = None
+    given_output = None
 
-if __name__ == __main__:
+    for input_path in input_files:
+        if test_input(input_path, solution_compiled_path, compiled_file_path) == False:
+            inputFile = open(input_path, 'r');
+            first_wrong_test = inputFile.read()
+            correct_output = give_output(input_path, solution_compiled_path)
+            given_output = give_output(input_path, compiled_file_path)
+    delete_files(input_files)
+    if first_wrong_test != None:
+        return [False, [first_wrong_test, correct_output, given_output]]
+    return [True, []]
+
+def main():
+    compiled_file = give_compiled('test.c', 'test_compiled.out')
+    print(give_output(1, "test_compiled.out"))
+    print(test_input("1", "test_1.out", "test_2.out"))
+    print(test_code(1, "test.c"))
+
+if __name__ == '__main__':
     main();
 
