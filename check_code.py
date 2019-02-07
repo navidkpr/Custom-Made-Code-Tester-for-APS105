@@ -10,10 +10,6 @@ def delete_files(file_paths): #Tested
     for path in file_paths:
         os.system("rm {}".format(path));
 
-def test_input(output_path, solution_path): #Tested
-    text = os.system("diff --strip-trailing-cr {} {}".format(output_path, solution_path))
-    print(text)
-
 def compare_strings_ignore_whitespace(s1, s2): #Tested
     remove = string.whitespace
     return s1.translate(None, remove) == s2.translate(None, remove)
@@ -38,10 +34,13 @@ def make_inputs(lab_number):
     return 0
 
 def test_code(lab_number, test_file_name): #Tested
+    created_files_paths = ["path_scanner.pyc", "user_compiled_code.out"]
     #make_inputs(lab_number, input_path)
     #input_files = scan(input_path)
     input_files = ["1", "2"]
-    compiled_file_path = give_compiled(test_file_name, "user_compiled_code")
+
+    compiled_file_path = give_compiled(test_file_name, "user_compiled_code.out")
+
     solution_compiled_path = "solution.out";
     first_wrong_test = None
     correct_output = None
@@ -53,16 +52,14 @@ def test_code(lab_number, test_file_name): #Tested
             first_wrong_test = inputFile.read()
             correct_output = give_output(input_path, solution_compiled_path)
             given_output = give_output(input_path, compiled_file_path)
-    delete_files(input_files)
+    delete_files(input_files + created_files_paths)
     if first_wrong_test != None:
         return [False, [first_wrong_test, correct_output, given_output]]
     return [True, []]
 
 def main():
-    compiled_file = give_compiled('test.c', 'test_compiled.out')
-    print(give_output(1, "test_compiled.out"))
-    print(test_input("1", "test_1.out", "test_2.out"))
     print(test_code(1, "test.c"))
+
 
 if __name__ == '__main__':
     main();
