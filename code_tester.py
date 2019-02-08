@@ -84,7 +84,7 @@ def main():
         print("All answers were correct!")
 
     else:
-        print("the answer for test {} was wrong.\n\n input: ".format(returned_val[1][0]) + str(returned_val[1][1]))
+        print("the answer for test {0} was wrong.\n\n input: ".format(returned_val[1][0]) + str(returned_val[1][1]))
         print("correct solution was: " + returned_val[1][2] + "\n\n")
         print("youre output was: " + returned_val[1][3])
 
