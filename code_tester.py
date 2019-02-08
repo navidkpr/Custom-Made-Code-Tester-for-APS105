@@ -8,10 +8,10 @@ output_path = "user_outputs/"
 
 def delete_files(file_paths): #Tested
     for path in file_paths:
-        os.system("rm {}".format(path));
+        os.system("rm {0}".format(path));
     are_files_deleted = True
     for path in file_paths:
-        if os.path.isfile("./{}".format(path)):
+        if os.path.isfile("./{0}".format(path)):
             are_files_deleted = False
     return are_files_deleted
 
@@ -20,14 +20,14 @@ def compare_strings_ignore_whitespace(s1, s2): #Tested
     return s1.translate(None, remove) == s2.translate(None, remove)
 
 def give_compiled(file_name, compiled_file_name): #Tested
-    os.system("gcc {} -lm -o {}".format(file_name, compiled_file_name)) #If file is unable to compile the program will give user an error
+    os.system("gcc {0} -lm -o {1}".format(file_name, compiled_file_name)) #If file is unable to compile the program will give user an error
     #if os.path.isFile('./a.out') == False: #Return false if file was unable to compile
     #    return False
     return compiled_file_name
 
 def give_output(input_path, compiled_path): #Tested
     #print("./{} < {} > output.out".format(compiled_path, input_path))
-    os.system("./{} < {} > output.out".format(compiled_path, input_path))
+    os.system("./{0} < {1} > output.out".format(compiled_path, input_path))
     outputFile = open("output.out", 'r')
     delete_files(["output.out"])
     return outputFile.read()
@@ -70,8 +70,6 @@ def test_code(lab_number, test_file_name): #Tested
     if first_wrong_test != None:
         return [False, [first_wrong_index, first_wrong_test, correct_output, given_output]]
         return [True, []]
-
-
 #Output for test_code:
 # [True, []] -> Correct Code
 # [False, [False]] -> Compilation Error
