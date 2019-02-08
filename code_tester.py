@@ -69,14 +69,24 @@ def test_code(lab_number, test_file_name): #Tested
     delete_files(input_files + created_files_paths)
     if first_wrong_test != None:
         return [False, [first_wrong_index, first_wrong_test, correct_output, given_output]]
-        return [True, []]
+    return [True, []]
 #Output for test_code:
 # [True, []] -> Correct Code
 # [False, [False]] -> Compilation Error
 # [False, [input, correct_output, users_output]] -> Wrong Test Case
 
 def main():
-    print(test_code(1, "test.c"))
+    returned_val = test_code(1, "test.c")
+
+    print(returned_val[0])
+
+    if returned_val[0] == True:
+        print("All answers were correct!")
+
+    else:
+        print("the answer for test {} was wrong.\n\n input: ".format(returned_val[1][0]) + str(returned_val[1][1]))
+        print("correct solution was: " + returned_val[1][2] + "\n\n")
+        print("youre output was: " + returned_val[1][3])
 
 
 if __name__ == '__main__':

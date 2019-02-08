@@ -1,6 +1,6 @@
 import random
 
-test_num = 1000
+test_num = 100
 
 def make_inputs():
     for x in range(test_num):
