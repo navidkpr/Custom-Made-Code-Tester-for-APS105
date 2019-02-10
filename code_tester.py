@@ -1,7 +1,6 @@
 import os
 import string
 from path_scanner import scan
-from input_maker import make_inputs
 
 compiled_solution_path = "correct_outputs/"
 output_path = "user_outputs/"
@@ -27,7 +26,7 @@ def give_compiled(file_name, compiled_file_name): #Tested
 
 def give_output(input_path, compiled_path): #Tested
     #print("./{} < {} > output.out".format(compiled_path, input_path))
-    os.system("./{0} < {1} > output.out".format(compiled_path, input_path))
+    os.system("ulimit -t 1; ./{0} < {1} > output.out".format(compiled_path, input_path))
     outputFile = open("output.out", 'r')
     delete_files(["output.out"])
     return outputFile.read()
@@ -37,28 +36,27 @@ def test_input(input_path, solution_compiled_path, compiled_file_path): #Tested
     output2 = give_output(input_path, compiled_file_path)
     return compare_strings_ignore_whitespace(output1, output2)
 
-def create_inputs():
-    make_inputs();
-    return 0
+def create_inputs(lab_number):
+    os.system("python input_makers/input_maker{0}.py".format(lab_number))
+
 
 def test_code(lab_number, test_file_name): #Tested
     created_files_paths = ["path_scanner.pyc", "user_compiled_code.out"]
-    create_inputs()
+    create_inputs(lab_number)
     input_files = scan("inputs/")
     #input_files = ["1", "2"]
-
     compiled_file_path = give_compiled(test_file_name, "user_compiled_code.out")
     if compiled_file_path == False:
         return [false, [-1, -1, -1]]
 
-    solution_compiled_path = "solution.out";
+    solution_compiled_path = "solutions/solution{0}.out".format(lab_number);
     first_wrong_test = None
     first_wrong_index = None
     correct_output = None
     given_output = None
     x = 1
     for input_path in input_files:
-        print(x)
+        print("running test number {0}.".format(x))
         if test_input(input_path, solution_compiled_path, compiled_file_path) == False and first_wrong_test == None:
             inputFile = open(input_path, 'r');
             first_wrong_test = inputFile.read()
@@ -76,9 +74,9 @@ def test_code(lab_number, test_file_name): #Tested
 # [False, [input, correct_output, users_output]] -> Wrong Test Case
 
 def main():
-    returned_val = test_code(1, "test.c")
-
-    print(returned_val[0])
+    lab_number = raw_input("Please enter the number of the lab that you would like to test: ")
+    file_name = raw_input("And what is the name of your lab file(ex: text.c)?: ")
+    returned_val = test_code(lab_number, file_name)
 
     if returned_val[0] == True:
         print("All answers were correct!")

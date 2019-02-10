@@ -1,5 +1,4 @@
 1. Add a compilation error exception to compile_code function
-2. Complete Make_inputs fuction
-3. Make sure that the code deletes everything, even if it runs into an error (Try Threads?)
-4. Move all the functions into a class
-5. Add unit testing class
+2. Make sure that the code deletes everything, even if it runs into an error (Try Threads?)
+3. Add unit testing class
+4. Add django and move the tester on to localhost
