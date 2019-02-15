@@ -37,7 +37,7 @@ def test_input(input_path, solution_compiled_path, compiled_file_path): #Tested
     return compare_strings_ignore_whitespace(output1, output2)
 
 def create_inputs(lab_number):
-    os.system("python input_makers/input_maker{0}.py".format(lab_number))
+    os.system("python input_maker{0}.py".format(lab_number))
 
 
 def test_code(lab_number, test_file_name): #Tested
